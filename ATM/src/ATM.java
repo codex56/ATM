@@ -13,9 +13,9 @@ public class ATM
 		System.out.println("Enter you choice as 1 or 2");
 		System.out.println("1.To withdraw cash \n2.To check Current Balance\n");
 		Scanner in = new Scanner(System.in);
+		try{
 		choice = in.nextInt();
-		
-			switch(choice)
+		switch(choice)
 			{
 				case 1:	try
 			 {	
@@ -40,20 +40,24 @@ public class ATM
 				}
 				else
 				{
-					System.out.println("wrong pin or amount entered !!");
+					System.out.println("wrong pin !!");
 				}
 				
 			}
 				catch(Exception e)											/* For Error Caused By Wrong Type Of Input */
 				 {
-				System.out.println("Wrong Pin Entered !!!");	
+				System.out.println("Wrong Pin or amount Entered !!!");	
 				 }
 					break;
 				case 2: System.out.println("Balance is "+balance);
 					break;
 				default : System.out.println("Wrong Choice Entered !");
 			}
-		 
+		}
+		catch(Exception e)
+		{
+			System.out.println(" Please enter correct choice ");
+		}
 	}
 				
 }
