@@ -1,0 +1,162 @@
+/* Program to perform Basic ATM operation */
+
+
+import java.util.Scanner;								
+
+public class ATM 
+{
+ static double balance=10000.00;									/* Assumed Initially PIN AND BALANCE IS PRESNT or accessed via database*/
+ static int default_pin=8796;
+
+ public static void main(String[] args)
+{
+	int choice,withdraw_amount,response;
+	System.out.println("\t!!!WELCOME!!!\n");
+	input_pin();
+do{
+		do
+		{					
+			System.out.println("Enter your choice as 1,2 or 3");
+			System.out.println("1.Withdraw cash \n2.Check Current Balance\n3.Exit");
+			choice=input_choice();
+		}while(choice<1 && choice>3);
+		
+	switch(choice)
+		{
+		case 1: 	withdraw_amount=input_amount();
+					if(check_amount(withdraw_amount)==1 && balance>0)			/* Checking if enough balance and valid amount entered */
+					{
+						transaction_process(withdraw_amount);
+						display();
+						System.out.println("Transaction succesful..\n Thank you for using our Services...");			
+					}
+					else if(balance<=0 || withdraw_amount>=balance)
+					{
+						System.out.println("Insufficient balance !!!");								
+					}
+					else
+					{
+						System.out.println("Invalid Amount !!!");		
+					}
+			
+					break;
+		case 2: display();
+					break;
+		case 3: System.exit(0);
+		
+		default : System.out.println("Wrong Choice Entered !");
+		}
+		
+		try{												
+		System.out.println("Press 1 to continue...");					/* To provide user an option to continue  */
+		 Scanner in = new Scanner(System.in);
+		 response = in.nextInt();
+		}
+		catch(Exception e)
+		{
+			response = 0;
+		}
+	}while(response==1);
+}
+ 
+ 	/*	Taking input for choices	*/
+ static int input_choice()
+ {
+	 int choice;
+	 try{
+		 Scanner in = new Scanner(System.in);
+		 choice = in.nextInt();
+		 return choice;
+	 	}
+	 catch(Exception e)
+	 	{
+		 System.out.println("Incorrect Choice Entered !");
+		 return 0;
+	 	}
+ }
+ 
+  
+ 				/* For Taking PIN Input */
+static void input_pin()
+{  int pin=0,flag=0,chances=3; 
+	do{ 
+		try{
+			if(chances==0)			/* For Checking No. of attempts*/
+	    	{
+	    		System.out.println("Exceeded Maximum No. of Attempts !!!");
+	    		System.exit(0);
+	    	}
+			System.out.println("Enter the 4 Digit Pin");
+		    Scanner in = new Scanner(System.in);
+		    pin = in.nextInt();	
+		    flag=check_pin(pin);
+		    chances--;
+		    }
+	catch(Exception e)
+		{ chances--;
+		if(chances==0)			
+    	{
+    		System.out.println("Exceeded Maximum No. of Attempts !!!");
+    		System.exit(0);
+    	}
+			System.out.println("Please Enter Valid PIN !!!");
+		}
+	}while(flag==0);
+	
+}
+
+		/*	To validate Pin Entered by User */
+ static int check_pin(int pin)
+ {  
+	 if(default_pin==pin)
+		 return 1;
+	 else 
+		 {
+		 System.out.println("Invalid Pin...\t Please Re-enter PIN!!!");		
+		 return 0;
+		 }
+ }
+		
+
+ 	/* To Display the balance */
+static void display()
+ {
+	 System.out.println("Available Balance is "+balance);
+ }
+
+static int input_amount()
+{ int amount = 0,flag=0;
+	do
+	{
+		try{
+			System.out.println("enter the amount");
+			Scanner in = new Scanner(System.in);
+			amount=in.nextInt();
+			flag=1;
+			}
+	catch(Exception e)					/*	problem return makes loop skips		*/
+		   {
+			System.out.println("Invalid amount ....Re-Enter !!!");
+		   }		  
+	}while(flag==0);	
+	return amount;
+}
+
+
+	/* To Check amount can be withdrawn or not */
+static int check_amount(int amount)
+{
+	if( amount < (balance-1000) && amount >= 0 && (amount%100)==0)
+		return 1;
+	else
+		return 0;
+}
+		
+
+		
+static void transaction_process(int amount_to_withdraw)
+{
+  balance=balance-amount_to_withdraw;
+}
+
+}													/*End of Class ATM */
